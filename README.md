@@ -1,0 +1,1 @@
+# NoSql-Blicharz-Glod-Project
