@@ -23,17 +23,19 @@ public class Main {
             System.out.println(doc.toJson());
             System.out.println(doc.getEmbedded(embeddedList, Document.class).get("wall_type"));*/
 
-        District dzielnica1 = new District();
-        List<String> embeddedList = new ArrayList<>();
-        embeddedList.add("number_of_buildings");
-        FindIterable<Document> allDistricts = dzielnica1.getAllDistricts();
-        for (Document doc :
-                allDistricts) {
-            System.out.println(doc.toJson());
-            System.out.println(doc.getEmbedded(embeddedList, Document.class).get("utility_buildings"));
-        }
+//        District dzielnica1 = new District();
+//        List<String> embeddedList = new ArrayList<>();
+//        embeddedList.add("number_of_buildings");
+//        FindIterable<Document> allDistricts = dzielnica1.getAllDistricts();
+//        for (Document doc :
+//                allDistricts) {
+//            System.out.println(doc.toJson());
+//            System.out.println(doc.getEmbedded(embeddedList, Document.class).get("utility_buildings"));
+//        }
+//
+//
 
-        new MainPanel("PLAN MIASTA");
+       new MenuForm("Menu").setVisible(true);
 
     }
 }
