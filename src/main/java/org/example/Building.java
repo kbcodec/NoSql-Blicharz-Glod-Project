@@ -23,6 +23,7 @@ public class Building {
     private boolean hasBalcony;
     private int yearOfBuild;
 
+    int xyz;
     public Building(int buildingId, String name, String type, String archWallType, String archWallColor, int condignations, boolean hasBalcony, int yearOfBuild) {
         this.buildingId = buildingId;
         this.name = name;
