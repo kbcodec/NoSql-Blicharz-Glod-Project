@@ -1,0 +1,23 @@
+{
+"district_id": "3",
+"name": "New World",
+"number_of_inhabitants": 3550,
+"number_of_buildings":{
+ "utility_buildings": 55,
+"residential_buildings": 120,
+"industrial_buildings": 25
+},
+"has_park": true,
+"park_info":{
+  "park_name": "City Park",
+  "number_of_fountains": 2,
+"number_of_benches": 30,
+"area_in_km_square": 2,
+"number_of_entrances": 8
+},
+"public_transport":{
+  "bus_lines": [120, 150, 140],
+"tram_lines": [12,14,15,19]  
+},
+"area_in_km_square": 32
+}
