@@ -6,6 +6,7 @@ import org.bson.Document;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.util.Arrays;
 
 public class District {
     private int district_id;
@@ -24,8 +25,8 @@ public class District {
 
     private int number_of_entrances;
 
-    private String[] bus_lines = new String[10];
-    private String[] tram_lines = new String[10];
+    private String[] bus_lines = new String[100];
+    private String[] tram_lines = new String[100];
     private double area;
 
 
@@ -54,47 +55,29 @@ public class District {
 
     public FindIterable<Document> getAllDistricts() {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         MongoDBConnection database = new MongoDBConnection();
         MongoCollection<Document> districtsCollection = database.getCollection("Districts");
         return districtsCollection.find();
+    }
+    @Override
+    public String toString() {
+        return "District{" +
+                "district_id=" + district_id +
+                ", name='" + name + '\'' +
+                ", number_of_inhabitatns=" + number_of_inhabitatns +
+                ", utility_buildings=" + utility_buildings +
+                ", residential_buildings=" + residential_buildings +
+                ", industrial_buildings=" + industrial_buildings +
+                ", has_park=" + has_park +
+                ", park_name='" + park_name + '\'' +
+                ", number_of_fountains=" + number_of_fountains +
+                ", number_of_benches=" + number_of_benches +
+                ", parkArea=" + parkArea +
+                ", number_of_entrances=" + number_of_entrances +
+                ", bus_lines=" + Arrays.toString(bus_lines) +
+                ", tram_lines=" + Arrays.toString(tram_lines) +
+                ", area=" + area +
+                '}';
     }
 
     void showData(JTable jTable, DefaultTableModel dtm) {

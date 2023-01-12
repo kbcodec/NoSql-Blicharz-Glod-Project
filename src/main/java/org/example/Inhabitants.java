@@ -53,6 +53,20 @@ public class Inhabitants {
 
     public Inhabitants() {
     }
+    @Override
+    public String toString() {
+        return "Inhabitants{" +
+                "inhabitant_id=" + inhabitant_id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", BirthDate=" + BirthDate +
+                ", gender='" + gender + '\'' +
+                ", education='" + education + '\'' +
+                ", profession='" + profession + '\'' +
+                ", districtID='" + districtID + '\'' +
+                ", buildingID='" + buildingID + '\'' +
+                '}';
+    }
 
     public FindIterable<Document> getAllInhabitants() {
         MongoDBConnection database = new MongoDBConnection();
