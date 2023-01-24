@@ -24,6 +24,7 @@ public class ListForm extends JFrame{
     private JTextField searchValue;
     DefaultTableModel model = new DefaultTableModel();
     private Users loggedUser;
+    private String actualCollection;
 
     public ListForm(String title, Users loggedUser) throws HeadlessException {
         super(title);
@@ -54,6 +55,7 @@ public class ListForm extends JFrame{
         });
 
         showBuildings(buildings, buildingHeader);
+        actualCollection = "Buildings";
         assignChoseColumnValues(buildingHeader, 0);
 
         buildingsBtn.addActionListener(e -> {
@@ -68,6 +70,7 @@ public class ListForm extends JFrame{
                 List<Buildings> chosenBuildings = getChosenBuildings(chooseColumn, searchValue);
                 showBuildings(chosenBuildings, buildingHeader);
             }
+            actualCollection = "Buildings";
             assignChoseColumnValues(buildingHeader, lastSelectedIndex);
         });
 
@@ -82,6 +85,7 @@ public class ListForm extends JFrame{
                 List<Inhabitants> chosenInhabitants = getChosenInhabitants(chooseColumn, searchValue);
                 showInhabitants(chosenInhabitants, inhabitantHeader);
             }
+            actualCollection = "Inhabitants";
             assignChoseColumnValues(inhabitantHeader, lastSelectedIndex);
         });
 
@@ -96,7 +100,17 @@ public class ListForm extends JFrame{
                 List<Districts> chosenDistricts = getChosenDistricts(chooseColumn, searchValue);
                 showDistricts(chosenDistricts, districtHeader);
             }
+            actualCollection = "Districts";
             assignChoseColumnValues(districtHeader, lastSelectedIndex);
+        });
+
+        table.getSelectionModel().addListSelectionListener(e -> {
+            if(loggedUser != null && table.getSelectedRow() != -1) {
+                if(!e.getValueIsAdjusting()) {
+                    new actionMenuDialog(this, "Możliwe akcje na wybranym polu", actualCollection, (Integer) table.getValueAt(table.getSelectedRow(), 0)).setVisible(true);
+                }
+            }
+
         });
 
 

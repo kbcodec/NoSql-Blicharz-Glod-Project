@@ -23,9 +23,8 @@ public class MenuLoggedForm extends JFrame{
         this.pack();
         this.setLocationRelativeTo(null);
         this.setResizable(false);
+        this.setTitle("User: " + loggedUser.getLogin());
         this.loggedUser = loggedUser;
-
-        menuTextLabel.setText("MENU " + loggedUser.getLogin());
 
         listBtn.addActionListener(e -> openListForm());
 

@@ -3,6 +3,7 @@ package org.example.collections.inhabitant;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 import org.bson.Document;
 import org.bson.codecs.configuration.CodecProvider;
 import org.bson.codecs.configuration.CodecRegistry;
@@ -150,6 +151,15 @@ public class Inhabitants {
             result.add(inhabitant);
         }
         return result;
+    }
+
+    public Inhabitants createInhabitantById(Integer fieldId) {
+        CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
+        CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
+        MongoDatabase database = MongoDBConnection.connect(pojoCodecRegistry);
+        MongoCollection<Inhabitants> collection = database.getCollection("Inhabitants", Inhabitants.class);
+
+        return collection.find(Filters.eq("inhabitantId", fieldId)).first();
     }
 
     @Override
