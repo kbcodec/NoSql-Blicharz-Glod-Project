@@ -1,7 +1,8 @@
-package org.example;
+package org.example.database;
 
 import com.mongodb.client.*;
 import org.bson.Document;
+import org.bson.codecs.configuration.CodecRegistry;
 
 import javax.print.Doc;
 
@@ -14,17 +15,9 @@ public class MongoDBConnection {
     public MongoDBConnection() {
     }
 
-    private MongoDatabase connect() {
+    public static MongoDatabase connect(CodecRegistry pojoCodecRegistry) {
         MongoClient mongoClient = MongoClients.create(uri);
-        return mongoClient.getDatabase("CityDB");
-
-    }
-
-    public MongoCollection<Document> getCollection(String collection) {
-        MongoDBConnection db = new MongoDBConnection();
-        MongoDatabase dbConnection = db.connect();
-        return dbConnection.getCollection(collection);
-
+        return mongoClient.getDatabase("CityDB").withCodecRegistry(pojoCodecRegistry);
     }
 
 }
