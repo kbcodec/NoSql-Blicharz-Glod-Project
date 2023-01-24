@@ -9,9 +9,9 @@ import org.bson.codecs.configuration.CodecProvider;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.types.ObjectId;
-import org.example.collections.building.Buildings;
 import org.example.database.MongoDBConnection;
 
+import javax.print.Doc;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -160,6 +160,30 @@ public class Inhabitants {
         MongoCollection<Inhabitants> collection = database.getCollection("Inhabitants", Inhabitants.class);
 
         return collection.find(Filters.eq("inhabitantId", fieldId)).first();
+    }
+
+    public void modifyInhabitantInDatabase() {
+        CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
+        CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
+        MongoDatabase database = MongoDBConnection.connect(pojoCodecRegistry);
+        MongoCollection<Inhabitants> collection = database.getCollection("Inhabitants", Inhabitants.class);
+
+        Document filter = new Document();
+        filter.append("inhabitantId", this.getInhabitantId());
+        Document updater = new Document();
+        Document setter = new Document();
+        setter.append("personalInfo.firstName", this.getPersonalInfo().getFirstName());
+        setter.append("personalInfo.lastName", this.getPersonalInfo().getLastName());
+        setter.append("personalInfo.dateOfBirth", this.getPersonalInfo().getDateOfBirth());
+        setter.append("personalInfo.gender", this.getPersonalInfo().getGender());
+        setter.append("education", this.getEducation());
+        setter.append("profession", this.getProfession());
+        setter.append("districtId", this.getDistrictId());
+        setter.append("buildingId", this.getBuildingId());
+        updater.append("$set", setter);
+
+        collection.updateOne(filter, updater);
+
     }
 
     @Override

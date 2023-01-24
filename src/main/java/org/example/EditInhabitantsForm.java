@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.collections.inhabitant.Inhabitants;
+import org.example.collections.inhabitant.PersonalInfo;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,6 +18,7 @@ public class EditInhabitantsForm extends JFrame{
     private JTextField buildingIdTextField;
     private JTextField districtTextField;
     private Integer fieldId;
+    private Inhabitants chosenInhabitant;
 
     public EditInhabitantsForm(String title, Integer fieldId) throws HeadlessException {
         super(title);
@@ -27,12 +29,25 @@ public class EditInhabitantsForm extends JFrame{
         this.setResizable(false);
         this.fieldId = fieldId;
 
-        assignDataToTextFields(this.fieldId);
+        chosenInhabitant = new Inhabitants().createInhabitantById(fieldId);
+
+        assignDataToTextFields(chosenInhabitant);
+
+        updateDataButton.addActionListener(e -> {
+                    chosenInhabitant.setPersonalInfo(new PersonalInfo(firstNameTextField.getText(), lastNameTextField.getText(), Integer.parseInt(yearOfBirthTextField.getText()), genderTextField.getText()));
+                    chosenInhabitant.setProfession(professionTextField.getText());
+                    chosenInhabitant.setEducation(titleTextField.getText());
+                    chosenInhabitant.setBuildingId(Integer.parseInt(buildingIdTextField.getText()));
+                    chosenInhabitant.setDistrictId(Integer.parseInt(districtTextField.getText()));
+                    chosenInhabitant.modifyInhabitantInDatabase();
+                    JOptionPane.showMessageDialog(this, "Udało się zmodyfikować użytkownika!", "Powodzenie", JOptionPane.INFORMATION_MESSAGE);
+                    this.dispose();
+                }
+        );
 
     }
 
-    void assignDataToTextFields(Integer fieldId) {
-        Inhabitants chosenInhabitant = new Inhabitants().createInhabitantById(fieldId);
+    void assignDataToTextFields(Inhabitants chosenInhabitant) {
         firstNameTextField.setText(chosenInhabitant.getPersonalInfo().getFirstName());
         lastNameTextField.setText(chosenInhabitant.getPersonalInfo().getLastName());
         yearOfBirthTextField.setText(String.valueOf(chosenInhabitant.getPersonalInfo().getDateOfBirth()));
@@ -41,5 +56,9 @@ public class EditInhabitantsForm extends JFrame{
         professionTextField.setText(chosenInhabitant.getProfession());
         buildingIdTextField.setText(String.valueOf(chosenInhabitant.getBuildingId()));
         districtTextField.setText(String.valueOf(chosenInhabitant.getDistrictId()));
+    }
+
+    void updateInhabitant(Inhabitants chosenInhabitant) {
+        chosenInhabitant.modifyInhabitantInDatabase();
     }
 }
