@@ -19,7 +19,7 @@
           </grid>
         </constraints>
       </vspacer>
-      <component id="5ca33" class="javax.swing.JLabel">
+      <component id="5ca33" class="javax.swing.JLabel" binding="menuTextLabel">
         <constraints>
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>

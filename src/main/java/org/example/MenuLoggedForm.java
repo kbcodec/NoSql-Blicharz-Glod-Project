@@ -12,9 +12,11 @@ public class MenuLoggedForm extends JFrame{
     private JButton addBtn;
     private JButton deleteBtn;
     private JButton logOut;
+    private JLabel menuTextLabel;
     private Users loggedUser;
 
     public MenuLoggedForm(String title, Users loggedUser) throws HeadlessException {
+
         super(title);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setContentPane(MainPanel);
@@ -22,5 +24,23 @@ public class MenuLoggedForm extends JFrame{
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.loggedUser = loggedUser;
+
+        menuTextLabel.setText("MENU " + loggedUser.getLogin());
+
+        listBtn.addActionListener(e -> openListForm());
+
+        logOut.addActionListener(e -> logOut());
+
+    }
+
+    private void openListForm() {
+        this.dispose();
+        new ListForm("Wyświetl dane", this.loggedUser).setVisible(true);
+
+    }
+
+    private void logOut() {
+        this.dispose();
+        new MenuForm("Menu").setVisible(true);
     }
 }

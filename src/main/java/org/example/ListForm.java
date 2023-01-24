@@ -3,6 +3,7 @@ package org.example;
 import org.example.collections.building.Buildings;
 import org.example.collections.district.Districts;
 import org.example.collections.inhabitant.Inhabitants;
+import org.example.collections.user.Users;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -22,14 +23,16 @@ public class ListForm extends JFrame{
     private JComboBox chooseColumn;
     private JTextField searchValue;
     DefaultTableModel model = new DefaultTableModel();
+    private Users loggedUser;
 
-    public ListForm(String title) throws HeadlessException {
+    public ListForm(String title, Users loggedUser) throws HeadlessException {
         super(title);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setContentPane(ListPanel);
         this.pack();
         this.setLocationRelativeTo(null);
         this.setResizable(false);
+        this.loggedUser = loggedUser;
 
         List<Buildings> buildings = new Buildings().getAllBuildings();
         List<Inhabitants> inhabitants = new Inhabitants().getAllInhabitants();
@@ -42,7 +45,11 @@ public class ListForm extends JFrame{
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                new MenuForm("Menu").setVisible(true);
+                if(loggedUser == null) {
+                    new MenuForm("Menu").setVisible(true);
+                } else {
+                    new MenuLoggedForm("Menu", loggedUser).setVisible(true);
+                }
             }
         });
 

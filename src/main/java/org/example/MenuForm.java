@@ -27,11 +27,7 @@ public class MenuForm extends JFrame{
         editBtn.addActionListener(e -> accesDeniedInformation());
         addBtn.addActionListener(e -> accesDeniedInformation());
         deleteBtn.addActionListener(e -> accesDeniedInformation());
-
-        registerBtn.addActionListener(e -> {
-            openRegisterForm();
-        });
-
+        registerBtn.addActionListener(e -> openRegisterForm());
         logInButton.addActionListener(e -> openLoginForm());
     }
 
@@ -42,7 +38,7 @@ public class MenuForm extends JFrame{
 
     private void openListForm() {
         this.setVisible(false);
-        new ListForm("Wyświetl dane").setVisible(true);
+        new ListForm("Wyświetl dane", null).setVisible(true);
     }
 
     private void openLoginForm() {
