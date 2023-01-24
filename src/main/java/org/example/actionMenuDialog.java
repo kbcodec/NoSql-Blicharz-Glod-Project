@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.collections.inhabitant.Inhabitants;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -22,11 +24,18 @@ public class actionMenuDialog extends JDialog{
 
         if(actualCollection.equals("Inhabitants")) {
             editFieldBtn.addActionListener(e -> openEditInhabitantsFrame(this.fieldId));
+            deleteFieldBtn.addActionListener(e -> deleteInhabitantFromDatabase(this.fieldId));
         } else if (actualCollection.equals("Buildings")) {
             editFieldBtn.addActionListener(e -> openEditBuildingsFrame(this.fieldId));
         } else {
             editFieldBtn.addActionListener(e -> openEditDistrictsFrame(this.fieldId));
         }
+    }
+
+    private void deleteInhabitantFromDatabase(Integer fieldId) {
+        Inhabitants.deleteInhabitantFromDatabase(fieldId);
+        JOptionPane.showMessageDialog(this, "Usunięcie przebiegło pomyślnie!", "Powodzenie", JOptionPane.INFORMATION_MESSAGE);
+        this.dispose();
     }
 
     private void openEditDistrictsFrame(Integer fieldId) {

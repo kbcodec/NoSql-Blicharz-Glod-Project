@@ -29,7 +29,7 @@ public class EditInhabitantsForm extends JFrame{
         this.setResizable(false);
         this.fieldId = fieldId;
 
-        chosenInhabitant = new Inhabitants().createInhabitantById(fieldId);
+        chosenInhabitant = new Inhabitants().createInhabitantById(this.fieldId);
 
         assignDataToTextFields(chosenInhabitant);
 
@@ -56,9 +56,5 @@ public class EditInhabitantsForm extends JFrame{
         professionTextField.setText(chosenInhabitant.getProfession());
         buildingIdTextField.setText(String.valueOf(chosenInhabitant.getBuildingId()));
         districtTextField.setText(String.valueOf(chosenInhabitant.getDistrictId()));
-    }
-
-    void updateInhabitant(Inhabitants chosenInhabitant) {
-        chosenInhabitant.modifyInhabitantInDatabase();
     }
 }

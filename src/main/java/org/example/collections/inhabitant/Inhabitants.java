@@ -186,6 +186,15 @@ public class Inhabitants {
 
     }
 
+    public static void deleteInhabitantFromDatabase(Integer fieldId) {
+        CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
+        CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
+        MongoDatabase database = MongoDBConnection.connect(pojoCodecRegistry);
+        MongoCollection<Inhabitants> collection = database.getCollection("Inhabitants", Inhabitants.class);
+
+        collection.deleteOne(new Document("inhabitantId", fieldId));
+    }
+
     @Override
     public String toString() {
         return "Inhabitatns{" +
