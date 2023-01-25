@@ -42,13 +42,14 @@ public class InhabitantGenerator {
         ArrayList<String> professions = new ArrayList<>(Arrays.asList("Senior Financial Analyst", "Software Consultant", "VP Marketing", "Office Assistant IV", "Systems Administrator III", "Programmer IV", "Recruiting Manager", "Research Assistant IV"));
 
 
+
         List<Document> inhabitants = new ArrayList<>();
         for (int i = 0; i < firstNames.size(); i++) {
             inhabitants.add(new Document("inhabitantId", i + 1)
-                    .append("personalInfo.firstName", firstNames.get(i))
-                    .append("personalInfo.lastName", lastNames.get(i))
-                    .append("personalInfo.dateOfBirth", dateOfBirths.get(i))
-                    .append("personalInfo.gender", genders.get(i))
+                    .append("personalInfo", new Document("firstName", firstNames.get(i))
+                            .append("lastName", lastNames.get(i))
+                            .append("dateOfBirth", dateOfBirths.get(i))
+                            .append("gender", genders.get(i)))
                     .append("buildingId", buildingIds.get(i))
                     .append("districtId", districtIds.get(i))
                     .append("education", educations.get(i))
