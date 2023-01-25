@@ -118,19 +118,34 @@ public class ListForm extends JFrame{
     }
 
     void showBuildings(List<Buildings> buildingsList, String[] headers) {
-        model = new DefaultTableModel(null, headers);
+        model = new DefaultTableModel(null, headers) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         table.setModel(model);
         fillBuildingList(buildingsList);
     }
 
     void showInhabitants(List<Inhabitants> inhabitantsList, String[] headers) {
-        model = new DefaultTableModel(null, headers);
+        model = new DefaultTableModel(null, headers) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         table.setModel(model);
         fillInhabitantList(inhabitantsList);
     }
 
     void showDistricts(List<Districts> districtsList, String[] headers) {
-        model = new DefaultTableModel(null, headers);
+        model = new DefaultTableModel(null, headers) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         table.setModel(model);
         fillDistrictList(districtsList);
     }

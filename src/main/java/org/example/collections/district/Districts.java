@@ -9,6 +9,7 @@ import org.bson.codecs.configuration.CodecProvider;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.types.ObjectId;
+import org.example.collections.inhabitant.Inhabitants;
 import org.example.database.MongoDBConnection;
 
 import java.util.*;
@@ -216,5 +217,48 @@ public class Districts {
                 ", parkInfo=" + parkInfo +
                 ", publicTransport=" + publicTransport +
                 '}';
+    }
+
+    public void modifyDistrictInDatabase() {
+        CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
+        CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
+        MongoDatabase database = MongoDBConnection.connect(pojoCodecRegistry);
+        MongoCollection<Districts> collection = database.getCollection("Districts", Districts.class);
+
+        Document filter = new Document();
+        filter.append("districtId", this.getDistrictId());
+        Document updater = new Document();
+        Document setter = new Document();
+        Document unsetter = new Document();
+        setter.append("name", this.getName());
+        setter.append("areaInKmSquare", this.getAreaInKmSquare());
+        setter.append("numberOfBuildings.utilityBuildings", this.getNumberOfBuildings().getUtilityBuildings());
+        setter.append("numberOfBuildings.residentialBuildings", this.getNumberOfBuildings().getResidentialBuildings());
+        setter.append("numberOfBuildings.industrialBuildings", this.getNumberOfBuildings().getIndustrialBuildings());
+        setter.append("hasPark", this.getHasPark());
+        if(this.getHasPark()) {
+            setter.append("parkInfo.parkName", this.getParkInfo().getParkName());
+            setter.append("parkInfo.numberOfFountains", this.getParkInfo().getNumberOfFountains());
+            setter.append("parkInfo.numberOfBenches", this.getParkInfo().getNumberOFBenches());
+            setter.append("parkInfo.numberOfEntrances", this.getParkInfo().getNumberOfEntrances());
+            setter.append("parkInfo.areaInKmSquare", this.getParkInfo().getAreaInKmSquare());
+            setter.append("districtId", this.getDistrictId());
+            setter.append("numberOfInhabitants", this.getNumberOfInhabitants());
+            updater.append("$set", setter);
+
+        } else {
+            unsetter.append("parkInfo.parkName", "");
+            unsetter.append("parkInfo.numberOfFountains", "");
+            unsetter.append("parkInfo.numberOfBenches", "");
+            unsetter.append("parkInfo.numberOfEntrances", "");
+            unsetter.append("parkInfo.areaInKmSquare", "");
+            setter.append("districtId", this.getDistrictId());
+            setter.append("numberOfInhabitants", this.getNumberOfInhabitants());
+            updater.append("$set", setter);
+            updater.append("$unset", unsetter);
+        }
+
+        collection.updateOne(filter, updater);
+
     }
 }
