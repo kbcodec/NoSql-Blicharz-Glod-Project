@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.collections.building.Buildings;
 import org.example.collections.inhabitant.Inhabitants;
 
 import javax.swing.*;
@@ -27,9 +28,16 @@ public class actionMenuDialog extends JDialog{
             deleteFieldBtn.addActionListener(e -> deleteInhabitantFromDatabase(this.fieldId));
         } else if (actualCollection.equals("Buildings")) {
             editFieldBtn.addActionListener(e -> openEditBuildingsFrame(this.fieldId));
+            deleteFieldBtn.addActionListener(e -> deleteBuildingFromDatabase(this.fieldId));
         } else {
             editFieldBtn.addActionListener(e -> openEditDistrictsFrame(this.fieldId));
         }
+    }
+
+    private void deleteBuildingFromDatabase(Integer fieldId) {
+        Buildings.deleteBuildingFromDatabase(fieldId);
+        JOptionPane.showMessageDialog(this, "Usunięcie przebiegło pomyślnie!", "Powodzenie", JOptionPane.INFORMATION_MESSAGE);
+        this.dispose();
     }
 
     private void deleteInhabitantFromDatabase(Integer fieldId) {
@@ -42,6 +50,8 @@ public class actionMenuDialog extends JDialog{
     }
 
     private void openEditBuildingsFrame(Integer fieldId) {
+        this.dispose();
+        new EditBuildingsForm("Edytowanie", fieldId).setVisible(true);
     }
 
     private void openEditInhabitantsFrame(Integer fieldId) {

@@ -3,11 +3,13 @@ package org.example.collections.building;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 import org.bson.Document;
 import org.bson.codecs.configuration.CodecProvider;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.types.ObjectId;
+import org.example.collections.inhabitant.Inhabitants;
 import org.example.database.MongoDBConnection;
 
 import java.util.*;
@@ -37,6 +39,15 @@ public class Buildings {
         map.put("Czy posiada balkon", "architecture.hasBalcony");
         map.put("Rok budowy", "year");
         headersMap = Collections.unmodifiableMap(map);
+    }
+
+    public static void deleteBuildingFromDatabase(Integer fieldId) {
+        CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
+        CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
+        MongoDatabase database = MongoDBConnection.connect(pojoCodecRegistry);
+        MongoCollection<Buildings> collection = database.getCollection("Buildings", Buildings.class);
+
+        collection.deleteOne(new Document("buildingId", fieldId));
     }
 
     public ObjectId getId() {
@@ -143,6 +154,15 @@ public class Buildings {
         return result;
     }
 
+    public Buildings createBuildingById(Integer fieldId) {
+        CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
+        CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
+        MongoDatabase database = MongoDBConnection.connect(pojoCodecRegistry);
+        MongoCollection<Buildings> collection = database.getCollection("Buildings", Buildings.class);
+
+        return collection.find(Filters.eq("buildingId", fieldId)).first();
+    }
+
     @Override
     public String toString() {
         return "Buildings{" +
@@ -152,5 +172,27 @@ public class Buildings {
                 ", architecture=" + architecture +
                 ", year=" + year +
                 '}';
+    }
+
+    public void modifyBuildingInDatabase() {
+        CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
+        CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
+        MongoDatabase database = MongoDBConnection.connect(pojoCodecRegistry);
+        MongoCollection<Buildings> collection = database.getCollection("Buildings", Buildings.class);
+
+        Document filter = new Document();
+        filter.append("buildingId", this.getBuildingId());
+        Document updater = new Document();
+        Document setter = new Document();
+        setter.append("name", this.getName());
+        setter.append("type", this.getType());
+        setter.append("year", this.getYear());
+        setter.append("architecture.condignations", this.getArchitecture().getCondignations());
+        setter.append("architecture.hasBalcony", this.getArchitecture().getHasBalcony());
+        setter.append("architecture.wallType", this.getArchitecture().getWallType());
+        setter.append("architecture.wallColor", this.getArchitecture().getWallColor());
+        updater.append("$set", setter);
+
+        collection.updateOne(filter, updater);
     }
 }
