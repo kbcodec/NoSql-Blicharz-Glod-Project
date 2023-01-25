@@ -47,6 +47,8 @@ public class actionMenuDialog extends JDialog{
     }
 
     private void openEditDistrictsFrame(Integer fieldId) {
+        this.dispose();
+        new EditDistrictsForm("Edytowanie", fieldId).setVisible(true);
     }
 
     private void openEditBuildingsFrame(Integer fieldId) {
