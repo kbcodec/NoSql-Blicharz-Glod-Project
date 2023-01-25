@@ -3,12 +3,12 @@ package org.example.collections.district;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 import org.bson.Document;
 import org.bson.codecs.configuration.CodecProvider;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.types.ObjectId;
-import org.example.collections.inhabitant.Inhabitants;
 import org.example.database.MongoDBConnection;
 
 import java.util.*;
@@ -192,6 +192,15 @@ public class Districts {
             result.add(district);
         }
         return result;
+    }
+
+    public Districts createDistrictById(Integer fieldId) {
+        CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
+        CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
+        MongoDatabase database = MongoDBConnection.connect(pojoCodecRegistry);
+        MongoCollection<Districts> collection = database.getCollection("Districts", Districts.class);
+
+        return collection.find(Filters.eq("districtId", fieldId)).first();
     }
 
     @Override
