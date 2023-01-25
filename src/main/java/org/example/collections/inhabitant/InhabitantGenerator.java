@@ -42,20 +42,20 @@ public class InhabitantGenerator {
 
 
 
-    List<Document> inhabitants = new ArrayList<>();
-        for (int i = 0; i < firstNames.size(); i++) {
-        inhabitants.add(new Document("inhabitantId", i + 1)
-                .append("personalInfo.firstName", firstNames.get(i))
-                .append("personalInfo.lastName", lastNames.get(i))
-                .append("personalInfo.dateOfBirth", dateOfBirths.get(i))
-                .append("personalInfo.gender", genders.get(i))
-                .append("buildingId", buildingIds.get(i))
-                .append("districtId", districtIds.get(i))
-                .append("education", educations.get(i))
-                .append("profession", professions.get(i)));
-    }
-
-        database.getCollection("Inhabitants").insertMany(inhabitants);
+//    List<Document> inhabitants = new ArrayList<>();
+//        for (int i = 0; i < firstNames.length; i++) {
+//        inhabitants.add(new Document("inhabitantId", i + 1)
+//                .append("personalInfo.firstName", firstNames.get(i))
+//                .append("personalInfo.lastName", lastNames.get(i))
+//                .append("personalInfo.dateOfBirth", dateOfBirths.get(i))
+//                .append("personalInfo.gender", genders.get(i))
+//                .append("buildingId", buildingIds.get(i))
+//                .append("districtId", districtIds.get(i))
+//                .append("education", educations.get(i))
+//                .append("profession", professions.get(i)));
+//    }
+//
+//        database.getCollection("Inhabitants").insertMany(inhabitants);
 }
 
 
