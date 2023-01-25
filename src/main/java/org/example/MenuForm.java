@@ -6,9 +6,7 @@ import java.awt.*;
 public class MenuForm extends JFrame{
     private JPanel MainPanel;
     private JButton listBtn;
-    private JButton editBtn;
     private JButton addBtn;
-    private JButton deleteBtn;
     private JButton registerBtn;
     private JButton logInButton;
 
@@ -24,9 +22,7 @@ public class MenuForm extends JFrame{
             openListForm();
         });
 
-        editBtn.addActionListener(e -> accesDeniedInformation());
         addBtn.addActionListener(e -> accesDeniedInformation());
-        deleteBtn.addActionListener(e -> accesDeniedInformation());
         registerBtn.addActionListener(e -> openRegisterForm());
         logInButton.addActionListener(e -> openLoginForm());
     }

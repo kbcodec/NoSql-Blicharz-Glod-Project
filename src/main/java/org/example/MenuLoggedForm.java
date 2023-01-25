@@ -8,9 +8,7 @@ import java.awt.*;
 public class MenuLoggedForm extends JFrame{
     private JPanel MainPanel;
     private JButton listBtn;
-    private JButton editBtn;
     private JButton addBtn;
-    private JButton deleteBtn;
     private JButton logOut;
     private JLabel menuTextLabel;
     private Users loggedUser;

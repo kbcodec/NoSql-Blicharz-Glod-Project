@@ -1,11 +1,16 @@
 package org.example;
 
 import org.example.collections.district.Districts;
+import org.example.collections.inhabitant.PersonalInfo;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class EditDistrictsForm extends JFrame {
     private JPanel MainPanel;
@@ -39,16 +44,39 @@ public class EditDistrictsForm extends JFrame {
         chosenDistrict = new Districts().createDistrictById(this.fieldId);
         assignDataToTextFields(chosenDistrict);
 
-        hasParkCb.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent itemEvent) {
-                if(itemEvent.getItem().equals("Tak")) {
-                    activateParkFields();
-                } else {
-                    deactivateParkFields();
-                }
+        hasParkCb.addItemListener(itemEvent -> {
+            if(itemEvent.getItem().equals("Tak")) {
+                activateParkFields();
+            } else {
+                deactivateParkFields();
             }
         });
+
+        updateDataButton.addActionListener(e -> {
+                    chosenDistrict.setName(nameTextField.getText());
+                    chosenDistrict.setAreaInKmSquare(Integer.parseInt(areaTextField.getText()));
+                    chosenDistrict.getNumberOfBuildings().setUtilityBuildings(Integer.parseInt(utilityBuildingsTextField.getText()));
+                    chosenDistrict.getNumberOfBuildings().setResidentialBuildings(Integer.parseInt(residentialBuildingsTextField.getText()));
+                    chosenDistrict.getNumberOfBuildings().setIndustrialBuildings(Integer.parseInt(industrialBuildingsTextField.getText()));
+                    if(hasParkCb.getSelectedIndex() == 0) {
+                        chosenDistrict.setHasPark(Boolean.TRUE);
+                        chosenDistrict.getParkInfo().setParkName(parkNameTextField.getText());
+                        chosenDistrict.getParkInfo().setNumberOfFountains(Integer.parseInt(fountainsNumberTextField.getText()));
+                        chosenDistrict.getParkInfo().setNumberOFBenches(Integer.parseInt(benchesNumberTextField.getText()));
+                        chosenDistrict.getParkInfo().setNumberOfEntrances(Integer.parseInt(entrancesNumberTextField.getText()));
+                        chosenDistrict.getParkInfo().setAreaInKmSquare(Double.parseDouble(parkAreaTextField.getText()));
+                    } else {
+                        chosenDistrict.setHasPark(Boolean.FALSE);
+                    }
+                    chosenDistrict.getPublicTransport().setBusLines(Arrays.stream(busLinesTextField.getText().replace("[", "").replace(" ", "").replace("]", "").split(",")).toList().stream().map(Integer::parseInt).collect(Collectors.toList()));
+                    chosenDistrict.getPublicTransport().setTramLines(Arrays.stream(tramLinesTextField.getText().replace("[", "").replace(" ", "").replace("]", "").split(",")).toList().stream().map(Integer::parseInt).collect(Collectors.toList()));
+                    chosenDistrict.setNumberOfInhabitants(Integer.parseInt(inhabitantsNumberTextField.getText()));
+                    chosenDistrict.modifyDistrictInDatabase();
+
+                    JOptionPane.showMessageDialog(this, "Udało się zmodyfikować użytkownika!", "Powodzenie", JOptionPane.INFORMATION_MESSAGE);
+                    this.dispose();
+                }
+        );
     }
 
     void assignDataToTextFields(Districts chosenDistrict) {
@@ -81,9 +109,14 @@ public class EditDistrictsForm extends JFrame {
     }
     void activateParkFields() {
         parkNameTextField.setEnabled(true);
+        parkNameTextField.setText("");
         fountainsNumberTextField.setEnabled(true);
+        fountainsNumberTextField.setText("");
         benchesNumberTextField.setEnabled(true);
+        benchesNumberTextField.setText("");
         entrancesNumberTextField.setEnabled(true);
+        entrancesNumberTextField.setText("");
         parkAreaTextField.setEnabled(true);
+        parkAreaTextField.setText("");
     }
 }
