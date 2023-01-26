@@ -37,7 +37,6 @@ public class BuildingGenerator {
         List<Integer> years = Arrays.asList(2012, 2010, 2008, 1999, 2009, 1991, 2000, 2002, 1986, 1985, 1995, 2000, 1998, 1993, 2011, 1990, 1964, 2009, 1996, 2010, 2005, 2007, 1999, 2004, 2009, 1988, 1996, 2005, 2002, 2005);
         List<Integer> buildingIds = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30);
 
-
         List<Document> buildings = new ArrayList<>();
         for (int i = 0; i < names.size(); i++) {
             buildings.add(new Document("name", names.get(i))
