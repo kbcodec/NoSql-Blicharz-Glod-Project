@@ -41,14 +41,7 @@ public class Buildings {
         headersMap = Collections.unmodifiableMap(map);
     }
 
-    public static void deleteBuildingFromDatabase(Integer fieldId) {
-        CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
-        CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
-        MongoDatabase database = MongoDBConnection.connect(pojoCodecRegistry);
-        MongoCollection<Buildings> collection = database.getCollection("Buildings", Buildings.class);
 
-        collection.deleteOne(new Document("buildingId", fieldId));
-    }
 
     public ObjectId getId() {
         return id;
@@ -109,6 +102,15 @@ public class Buildings {
         this.year = year;
     }
 
+    public static void deleteBuildingFromDatabase(Integer fieldId) {
+        CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
+        CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
+        MongoDatabase database = MongoDBConnection.connect(pojoCodecRegistry);
+        MongoCollection<Buildings> collection = database.getCollection("Buildings", Buildings.class);
+
+        collection.deleteOne(new Document("buildingId", fieldId));
+    }
+
     public List<Buildings> getAllBuildings() {
         CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
         CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
@@ -134,7 +136,7 @@ public class Buildings {
         MongoDatabase database = MongoDBConnection.connect(pojoCodecRegistry);
         MongoCollection<Buildings> collection = database.getCollection("Buildings", Buildings.class);
 
-        if(headersMap.get(fieldName).equals("buildingId") || headersMap.get(fieldName).equals("year")) {
+        if(headersMap.get(fieldName).equals("buildingId") || headersMap.get(fieldName).equals("year") || headersMap.get(fieldName).equals("architecture.condignations")) {
             query.append(headersMap.get(fieldName), Integer.valueOf(fieldValue));
         } else if (headersMap.get(fieldName).equals("architecture.hasBalcony")) {
             query.append(headersMap.get(fieldName), Boolean.valueOf(fieldValue));

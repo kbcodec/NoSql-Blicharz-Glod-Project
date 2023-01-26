@@ -98,6 +98,7 @@ public class Inhabitants {
     }
 
     public Inhabitants() {
+        this.personalInfo = new PersonalInfo();
     }
 
     public Inhabitants(ObjectId id, int inhabitantId, PersonalInfo personalInfo, String education, String profession, int districtId, int buildingId) {
@@ -193,6 +194,24 @@ public class Inhabitants {
         MongoCollection<Inhabitants> collection = database.getCollection("Inhabitants", Inhabitants.class);
 
         collection.deleteOne(new Document("inhabitantId", fieldId));
+    }
+
+    public static Inhabitants getLastId() {
+        CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
+        CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
+        MongoDatabase database = MongoDBConnection.connect(pojoCodecRegistry);
+        MongoCollection<Inhabitants> collection = database.getCollection("Inhabitants", Inhabitants.class);
+
+        return collection.find().sort(new Document("inhabitantId", -1)).first();
+    }
+
+    public static void addInhabitant(Inhabitants inhabitant) {
+        CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
+        CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
+        MongoDatabase database = MongoDBConnection.connect(pojoCodecRegistry);
+        MongoCollection<Inhabitants> collection = database.getCollection("Inhabitants", Inhabitants.class);
+
+        collection.insertOne(inhabitant);
     }
 
     @Override

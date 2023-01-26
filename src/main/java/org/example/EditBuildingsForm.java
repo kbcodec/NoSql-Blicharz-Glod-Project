@@ -37,7 +37,7 @@ public class EditBuildingsForm extends JFrame{
                     if(hasBalconyCb.getSelectedIndex() == 1) {
                         hasBalcony = Boolean.FALSE;
                     }
-                    chosenBuilding.setArchitecture(new Architecture(condignationsTextField.getText(), hasBalcony, wallTypeTextField.getText(), wallColorTextField.getText()));
+                    chosenBuilding.setArchitecture(new Architecture(Integer.parseInt(condignationsTextField.getText()), hasBalcony, wallTypeTextField.getText(), wallColorTextField.getText()));
                     chosenBuilding.setName(nameTextField.getText());
                     chosenBuilding.setType(typeTextField.getText());
                     chosenBuilding.setYear(Integer.parseInt(yearOfBuildTextField.getText()));
@@ -53,7 +53,7 @@ public class EditBuildingsForm extends JFrame{
         typeTextField.setText(chosenBuilding.getType());
         yearOfBuildTextField.setText(String.valueOf(chosenBuilding.getYear()));
         hasBalconyCb.setSelectedIndex(chosenBuilding.getArchitecture().getHasBalcony() ? 0 : 1);
-        condignationsTextField.setText(chosenBuilding.getArchitecture().getCondignations());
+        condignationsTextField.setText(String.valueOf(chosenBuilding.getArchitecture().getCondignations()));
         wallColorTextField.setText(chosenBuilding.getArchitecture().getWallColor());
         wallTypeTextField.setText(chosenBuilding.getArchitecture().getWallType());
     }

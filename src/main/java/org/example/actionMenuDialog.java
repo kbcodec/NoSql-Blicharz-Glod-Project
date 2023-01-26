@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.collections.building.Buildings;
+import org.example.collections.district.Districts;
 import org.example.collections.inhabitant.Inhabitants;
 
 import javax.swing.*;
@@ -31,7 +32,14 @@ public class actionMenuDialog extends JDialog{
             deleteFieldBtn.addActionListener(e -> deleteBuildingFromDatabase(this.fieldId));
         } else {
             editFieldBtn.addActionListener(e -> openEditDistrictsFrame(this.fieldId));
+            deleteFieldBtn.addActionListener(e -> deleteDistrictFromDatabase(this.fieldId));
         }
+    }
+
+    private void deleteDistrictFromDatabase(Integer fieldId) {
+        Districts.deleteDistrictFromDatabase(fieldId);
+        JOptionPane.showMessageDialog(this, "Usunięcie przebiegło pomyślnie!", "Powodzenie", JOptionPane.INFORMATION_MESSAGE);
+        this.dispose();
     }
 
     private void deleteBuildingFromDatabase(Integer fieldId) {

@@ -9,6 +9,7 @@ import org.bson.codecs.configuration.CodecProvider;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.types.ObjectId;
+import org.example.collections.building.Buildings;
 import org.example.collections.inhabitant.Inhabitants;
 import org.example.database.MongoDBConnection;
 
@@ -136,6 +137,15 @@ public class Districts {
         this.hasPark = hasPark;
         this.parkInfo = parkInfo;
         this.publicTransport = publicTransport;
+    }
+
+    public static void deleteDistrictFromDatabase(Integer fieldId) {
+        CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
+        CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
+        MongoDatabase database = MongoDBConnection.connect(pojoCodecRegistry);
+        MongoCollection<Districts> collection = database.getCollection("Districts", Districts.class);
+
+        collection.deleteOne(new Document("districtId", fieldId));
     }
 
     public List<Districts> getAllDistricts() {

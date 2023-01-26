@@ -1,16 +1,16 @@
 package org.example.collections.building;
 
 public class Architecture {
-    private String condignations;
+    private int condignations;
     private Boolean hasBalcony;
     private String wallType;
     private String wallColor;
 
-    public String getCondignations() {
+    public int getCondignations() {
         return condignations;
     }
 
-    public void setCondignations(String condignations) {
+    public void setCondignations(int condignations) {
         this.condignations = condignations;
     }
 
@@ -41,7 +41,7 @@ public class Architecture {
     public Architecture() {
     }
 
-    public Architecture(String condignations, Boolean hasBalcony, String wallType, String wallColor) {
+    public Architecture(int condignations, Boolean hasBalcony, String wallType, String wallColor) {
         this.condignations = condignations;
         this.hasBalcony = hasBalcony;
         this.wallType = wallType;

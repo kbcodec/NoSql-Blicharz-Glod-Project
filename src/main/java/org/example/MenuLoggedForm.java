@@ -25,9 +25,15 @@ public class MenuLoggedForm extends JFrame{
         this.loggedUser = loggedUser;
 
         listBtn.addActionListener(e -> openListForm());
+        addBtn.addActionListener(e -> openAddForm());
 
         logOut.addActionListener(e -> logOut());
 
+    }
+
+    private void openAddForm() {
+        this.dispose();
+        new ChooseCollectionForm("Dodaj dane").setVisible(true);
     }
 
     private void openListForm() {
