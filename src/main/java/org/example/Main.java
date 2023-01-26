@@ -15,6 +15,5 @@ public class Main {
 
             //InhabitantGenerator.Generator();
             //DistrictGenerator.Generator();
-            BuildingGenerator.Generator();
     }
 }

@@ -18,6 +18,12 @@ public class ChooseCollectionForm extends JFrame{
         this.setResizable(false);
 
         inhabitantsBtn.addActionListener(e -> addInhabitant());
+        buildingsBtn.addActionListener(e -> addBuilding());
+    }
+
+    private void addBuilding() {
+        this.dispose();
+        new AddBuildingForm("Dodaj budynek").setVisible(true);
     }
 
     private void addInhabitant() {

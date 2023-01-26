@@ -42,7 +42,6 @@ public class Buildings {
     }
 
 
-
     public ObjectId getId() {
         return id;
     }
@@ -92,6 +91,7 @@ public class Buildings {
     }
 
     public Buildings() {
+        this.architecture = new Architecture();
     }
 
     public Buildings(ObjectId id, int buildingId, String type, Architecture architecture, int year) {
@@ -174,6 +174,36 @@ public class Buildings {
                 ", architecture=" + architecture +
                 ", year=" + year +
                 '}';
+    }
+
+    public static Buildings getLastId() {
+        CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
+        CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
+        MongoDatabase database = MongoDBConnection.connect(pojoCodecRegistry);
+        MongoCollection<Buildings> collection = database.getCollection("Buildings", Buildings.class);
+
+        return collection.find().sort(new Document("buildingId", -1)).first();
+    }
+
+    public static void addBuilding(Buildings building) {
+        CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
+        CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
+        MongoDatabase database = MongoDBConnection.connect(pojoCodecRegistry);
+        MongoCollection<Document> collectionDocument = database.getCollection("Buildings");
+
+        Document newBuilding = new Document();
+        Document architecture = new Document();
+        architecture.append("condignations", building.getArchitecture().getCondignations())
+                .append("hasBalcony", building.getArchitecture().getHasBalcony())
+                .append("wallColor", building.getArchitecture().getWallColor())
+                .append("wallType", building.getArchitecture().getWallType());
+        newBuilding.append("buildingId", building.getBuildingId())
+                .append("name", building.getName())
+                .append("architecture", architecture)
+                .append("type", building.getType())
+                .append("year", building.getYear());
+
+        collectionDocument.insertOne(newBuilding);
     }
 
     public void modifyBuildingInDatabase() {

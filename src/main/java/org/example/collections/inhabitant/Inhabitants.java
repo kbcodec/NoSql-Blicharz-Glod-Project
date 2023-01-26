@@ -209,9 +209,22 @@ public class Inhabitants {
         CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
         CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
         MongoDatabase database = MongoDBConnection.connect(pojoCodecRegistry);
-        MongoCollection<Inhabitants> collection = database.getCollection("Inhabitants", Inhabitants.class);
+        MongoCollection<Document> collectionDocument = database.getCollection("Inhabitants");
 
-        collection.insertOne(inhabitant);
+        Document newInhabitant = new Document();
+        Document personalInfo = new Document();
+        personalInfo.append("firstName", inhabitant.getPersonalInfo().getFirstName())
+                .append("lastName", inhabitant.getPersonalInfo().getLastName())
+                .append("gender", inhabitant.getPersonalInfo().getGender())
+                .append("dateOfBirth", inhabitant.getPersonalInfo().getDateOfBirth());
+        newInhabitant.append("inhabitantId", inhabitant.getInhabitantId())
+                .append("personalInfo", personalInfo)
+                .append("buildingId", inhabitant.getBuildingId())
+                .append("districtId", inhabitant.getDistrictId())
+                .append("education", inhabitant.getEducation())
+                .append("profession", inhabitant.getProfession());
+
+        collectionDocument.insertOne(newInhabitant);
     }
 
     @Override
