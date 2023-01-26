@@ -9,6 +9,7 @@ public class MenuForm extends JFrame{
     private JButton addBtn;
     private JButton registerBtn;
     private JButton logInButton;
+    private JButton showBuildingsButton;
 
     public MenuForm(String title) throws HeadlessException {
         super(title);
@@ -25,6 +26,12 @@ public class MenuForm extends JFrame{
         addBtn.addActionListener(e -> accesDeniedInformation());
         registerBtn.addActionListener(e -> openRegisterForm());
         logInButton.addActionListener(e -> openLoginForm());
+        showBuildingsButton.addActionListener(e -> openBuildingForm());
+    }
+
+    private void openBuildingForm() {
+        this.setVisible(false);
+        new ShowBuildingsForm("Zestawienie budynków", null).setVisible(true);
     }
 
     private void openRegisterForm() {

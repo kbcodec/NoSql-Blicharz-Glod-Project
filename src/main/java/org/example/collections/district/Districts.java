@@ -125,6 +125,9 @@ public class Districts {
 
 
     public Districts() {
+        this.numberOfBuildings = new NumberOfBuildings();
+        this.parkInfo = new ParkInfo();
+        this.publicTransport = new PublicTransport();
     }
 
     public Districts(ObjectId id, int districtId, String name, int areaInKmSquare, NumberOfBuildings numberOfBuildings, int numberOfInhabitants, Boolean hasPark, ParkInfo parkInfo, PublicTransport publicTransport) {
@@ -229,6 +232,54 @@ public class Districts {
                 '}';
     }
 
+    public static Districts getLastId() {
+        CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
+        CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
+        MongoDatabase database = MongoDBConnection.connect(pojoCodecRegistry);
+        MongoCollection<Districts> collection = database.getCollection("Districts", Districts.class);
+
+        return collection.find().sort(new Document("districtId", -1)).first();
+    }
+
+    public static void addDistrict(Districts district) {
+        CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
+        CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
+        MongoDatabase database = MongoDBConnection.connect(pojoCodecRegistry);
+        MongoCollection<Document> collectionDocument = database.getCollection("Districts");
+
+        Document newDistrict = new Document();
+        newDistrict.append("name", district.getName())
+                .append("areaInKmSquare", district.getAreaInKmSquare())
+                .append("districtId", district.getDistrictId())
+                .append("hasPark", district.getHasPark());
+
+        if(district.getHasPark()) {
+            Document parkInfo = new Document();
+            parkInfo.append("parkName", district.getParkInfo().getParkName())
+                    .append("numberOfFountains", district.getParkInfo().getNumberOfFountains())
+                    .append("numberOfBenches", district.getParkInfo().getNumberOFBenches())
+                    .append("areaInKmSquare", district.getParkInfo().getAreaInKmSquare())
+                    .append("numberOfEntrances", district.getParkInfo().getNumberOfEntrances());
+
+            newDistrict.append("parkInfo", parkInfo);
+        }
+
+        Document numberOfBuildings = new Document();
+        numberOfBuildings.append("utilityBuildings", district.getNumberOfBuildings().getUtilityBuildings())
+                .append("residentialBuildings", district.getNumberOfBuildings().getResidentialBuildings())
+                .append("industrialBuildings", district.getNumberOfBuildings().getIndustrialBuildings());
+        newDistrict.append("numberOfBuildings", numberOfBuildings);
+
+        Document publicTransport = new Document();
+        publicTransport.append("busLines", district.getPublicTransport().getBusLines())
+                .append("tramLines", district.getPublicTransport().getTramLines());
+
+        newDistrict.append("publicTransport", publicTransport)
+                .append("numberOfInhabitants", district.getNumberOfInhabitants());
+
+        collectionDocument.insertOne(newDistrict);
+    }
+
     public void modifyDistrictInDatabase() {
         CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
         CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
@@ -272,3 +323,19 @@ public class Districts {
 
     }
 }
+
+
+//db.buildings.aggregate([
+//        {
+//        $lookup:
+//        {
+//        from: "inhabitants",
+//        localField: "buildingId",
+//        foreignField: "buildingId",
+//        as: "inhabitants_info"
+//        }
+//        },
+//        {
+//        $match: { "inhabitants_info.inhabitantId": 1 }
+//        }
+//        ])

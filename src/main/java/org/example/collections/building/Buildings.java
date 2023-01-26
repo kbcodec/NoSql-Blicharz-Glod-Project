@@ -227,4 +227,24 @@ public class Buildings {
 
         collection.updateOne(filter, updater);
     }
+
+    public static Buildings getBuildingForInhabitant(Inhabitants inhabitant) {
+        CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
+        CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
+        MongoDatabase database = MongoDBConnection.connect(pojoCodecRegistry);
+        MongoCollection<Buildings> collection = database.getCollection("Buildings", Buildings.class);
+
+        List<Document> aggregateList = new ArrayList<>();
+        Document lookup = new Document();
+        lookup.append("from", "Inhabitants")
+            .append("localField", "buildingId")
+            .append("foreignField", "buildingId")
+            .append("as", "inhabitants_info");
+        Document match = new Document();
+        match.append("$match", new Document("inhabitants_info.inhabitantId", inhabitant.getInhabitantId()));
+        aggregateList.add(new Document("$lookup", lookup));
+        aggregateList.add(match);
+
+        return collection.aggregate(aggregateList).first();
+    }
 }

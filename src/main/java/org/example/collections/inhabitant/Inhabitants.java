@@ -227,6 +227,16 @@ public class Inhabitants {
         collectionDocument.insertOne(newInhabitant);
     }
 
+    public Inhabitants getInhabitantByName(String firstName, String lastName) {
+        CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
+        CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
+        MongoDatabase database = MongoDBConnection.connect(pojoCodecRegistry);
+        MongoCollection<Inhabitants> collection = database.getCollection("Inhabitants", Inhabitants.class);
+
+        return collection.find(new Document().append("personalInfo.firstName", firstName).append("personalInfo.lastName", lastName)).first();
+
+    }
+
     @Override
     public String toString() {
         return "Inhabitatns{" +

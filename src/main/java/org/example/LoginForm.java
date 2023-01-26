@@ -27,7 +27,7 @@ public class LoginForm extends JFrame {
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                new MenuForm("Menu").setVisible(true);
+                new MenuLoggedForm("Menu", loggedUser).setVisible(true);
             }
         });
 

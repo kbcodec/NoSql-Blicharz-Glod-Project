@@ -1,9 +1,12 @@
 package org.example;
 
 import org.example.collections.building.Buildings;
+import org.example.collections.user.Users;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class AddBuildingForm extends JFrame {
     private JPanel MainPanel;
@@ -16,7 +19,7 @@ public class AddBuildingForm extends JFrame {
     private JTextField wallTypeTextField;
     private JButton addDataButton;
 
-    public AddBuildingForm(String title) throws HeadlessException {
+    public AddBuildingForm(String title, Users loggedUser) throws HeadlessException {
         super(title);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setContentPane(MainPanel);
@@ -25,6 +28,13 @@ public class AddBuildingForm extends JFrame {
         this.setResizable(false);
 
         addDataButton.addActionListener(e -> addBuilding());
+
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                new MenuLoggedForm("Menu", loggedUser).setVisible(true);
+            }
+        });
     }
 
     private void addBuilding() {
@@ -43,5 +53,7 @@ public class AddBuildingForm extends JFrame {
         building.getArchitecture().setWallType(wallTypeTextField.getText());
         building.setYear(Integer.parseInt(yearOfBuildTextField.getText()));
         Buildings.addBuilding(building);
+
+        JOptionPane.showMessageDialog(this, "Pomyślnie dodano rekord", "Powodzenie", JOptionPane.INFORMATION_MESSAGE);
     }
 }

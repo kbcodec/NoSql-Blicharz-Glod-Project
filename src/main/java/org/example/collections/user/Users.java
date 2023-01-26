@@ -135,6 +135,11 @@ public class Users {
         return collection.find(Filters.eq("login", login)).first();
     }
 
+    public boolean areLoginAndPasswordCorrectForExistingUser(String login, String password) {
+        Users user = new Users().readUser(login);
+        return user != null && BCrypt.verifyer().verify(password.toCharArray(), user.getPassword()).verified;
+    }
+
     @Override
     public String toString() {
         return "Users{" +

@@ -1,9 +1,12 @@
 package org.example;
 
 import org.example.collections.inhabitant.Inhabitants;
+import org.example.collections.user.Users;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class AddInhabitantForm extends JFrame {
     private JPanel MainPanel;
@@ -17,13 +20,20 @@ public class AddInhabitantForm extends JFrame {
     private JTextField districtTextField;
     private JButton addDataButton;
 
-    public AddInhabitantForm(String title) throws HeadlessException {
+    public AddInhabitantForm(String title, Users loggedUser) throws HeadlessException {
         super(title);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setContentPane(MainPanel);
         this.pack();
         this.setLocationRelativeTo(null);
         this.setResizable(false);
+
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                new MenuLoggedForm("Menu", loggedUser).setVisible(true);
+            }
+        });
 
         addDataButton.addActionListener(e -> addInhibitant());
     }
@@ -41,5 +51,7 @@ public class AddInhabitantForm extends JFrame {
         inhabitant.setDistrictId(Integer.parseInt(districtTextField.getText()));
         inhabitant.setBuildingId(Integer.parseInt(buildingIdTextField.getText()));
         Inhabitants.addInhabitant(inhabitant);
+
+        JOptionPane.showMessageDialog(this, "Pomyślnie dodano rekord", "Powodzenie", JOptionPane.INFORMATION_MESSAGE);
     }
 }

@@ -11,6 +11,7 @@ public class MenuLoggedForm extends JFrame{
     private JButton addBtn;
     private JButton logOut;
     private JLabel menuTextLabel;
+    private JButton showBuildingsButton;
     private Users loggedUser;
 
     public MenuLoggedForm(String title, Users loggedUser) throws HeadlessException {
@@ -26,14 +27,19 @@ public class MenuLoggedForm extends JFrame{
 
         listBtn.addActionListener(e -> openListForm());
         addBtn.addActionListener(e -> openAddForm());
-
+        showBuildingsButton.addActionListener(e -> openBuildingsForm());
         logOut.addActionListener(e -> logOut());
 
     }
 
+    private void openBuildingsForm() {
+        this.dispose();
+        new ShowBuildingsForm("Zestawienie budynków", loggedUser).setVisible(true);
+    }
+
     private void openAddForm() {
         this.dispose();
-        new ChooseCollectionForm("Dodaj dane").setVisible(true);
+        new ChooseCollectionForm("Dodaj dane", loggedUser).setVisible(true);
     }
 
     private void openListForm() {
